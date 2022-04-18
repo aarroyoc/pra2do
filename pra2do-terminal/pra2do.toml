@@ -1,0 +1,2 @@
+address = "127.0.0.1:6767"
+exec = "/home/aarroyoc/dev/scryer-prolog/target/release/scryer-prolog /home/aarroyoc/dev/pra2do/pra2do/example.pl -g main,halt."
