@@ -11,3 +11,4 @@ nom = "7.1.1"
 serde = { version = "1.0.136", features = ["derive"] }
 toml = "0.5.9"
 shlex = "1.1.0"
+css-color-parser = "0.1.2"

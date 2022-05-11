@@ -11,11 +11,13 @@ use macroquad::prelude::*;
 mod config;
 mod parser;
 
-#[derive(Eq, PartialEq, Clone)]
+#[derive(PartialEq, Clone)]
 pub enum CanvasCommand {
     AskInput,
-    FillStyle(String),
+    FillStyle(Color),
+    StrokeStyle(Color),
     FillRect(i32, i32, i32, i32),
+    StrokeRect(i32, i32, i32, i32),
     End
 }
 
@@ -87,23 +89,26 @@ async fn main() {
             commands = buffer;
         }
 
-        clear_background(RED);
+        clear_background(WHITE);
 
-        let mut color = RED;
+        let mut fill_color = RED;
+        let mut stroke_color = BLACK;
+        let mut stroke_thickness = 2.0;
 
         for command in commands.iter() {
             match command {
                 CanvasCommand::AskInput => {},
                 CanvasCommand::FillStyle(req_color) => {
-                    color = match req_color.as_str() {
-                        "green" => GREEN,
-                        "blue" => BLUE,
-                        "red" => RED,
-                        _ => BLUE,
-                    };
+                    fill_color = req_color.clone();
                 },
+                CanvasCommand::StrokeStyle(req_color) => {
+                    stroke_color = req_color.clone();
+                }
                 CanvasCommand::FillRect(x, y, width, height) => {
-                    draw_rectangle(*x as f32, *y as f32, *width as f32, *height as f32, color);
+                    draw_rectangle(*x as f32, *y as f32, *width as f32, *height as f32, fill_color);
+                }
+                CanvasCommand::StrokeRect(x, y, width, height) => {
+                    draw_rectangle_lines(*x as f32, *y as f32, *width as f32, *height as f32, stroke_thickness, stroke_color);
                 }
                 CanvasCommand::End => next_frame().await
             }
